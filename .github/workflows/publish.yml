@@ -1,0 +1,23 @@
+##
+# Publish new action tag(s) for downstream consumption
+##
+name: Publish
+
+# Manual or automatic release
+on:
+  release:
+    types: [published, edited]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      # Release with semantic tag like v1.0.3
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.release.tag_name }}        
+
+      - uses: aboutte/build-and-tag-action@v2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
